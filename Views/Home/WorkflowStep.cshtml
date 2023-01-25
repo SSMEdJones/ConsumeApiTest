@@ -1,0 +1,109 @@
+﻿@model ConsumeApiTest.Models.WorkFlowStepViewModel
+
+@{
+    ViewData["Title"] = "WorkflowStep";
+}
+
+<h1>WorkflowStep</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="WorkflowStep">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="WorkflowID" class="control-label"></label>
+                <input asp-for="WorkflowID" class="form-control" />
+                <span asp-validation-for="WorkflowID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="WorkflowStepID" class="control-label"></label>*@
+                <input asp-for="WorkflowStepID" class="form-control" type="hidden" />
+                @*<span asp-validation-for="WorkflowStepID" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="StepName" class="control-label"></label>
+                <input asp-for="StepName" class="form-control" />
+                <span asp-validation-for="StepName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StepDescription" class="control-label"></label>
+                <input asp-for="StepDescription" class="form-control" />
+                <span asp-validation-for="StepDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="isRoot" /> @Html.DisplayNameFor(model => model.isRoot)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="supervisorStep" /> @Html.DisplayNameFor(model => model.supervisorStep)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResponderMessage" class="control-label"></label>
+                <input asp-for="ResponderMessage" class="form-control" />
+                <span asp-validation-for="ResponderMessage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ResponderWarningMessage" class="control-label"></label>
+                <input asp-for="ResponderWarningMessage" class="form-control" />
+                <span asp-validation-for="ResponderWarningMessage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StakeholderMessage" class="control-label"></label>
+                <input asp-for="StakeholderMessage" class="form-control" />
+                <span asp-validation-for="StakeholderMessage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StakeholderWarningMessage" class="control-label"></label>
+                <input asp-for="StakeholderWarningMessage" class="form-control" />
+                <span asp-validation-for="StakeholderWarningMessage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DaysTillDue" class="control-label"></label>
+                <input asp-for="DaysTillDue" class="form-control" />
+                <span asp-validation-for="DaysTillDue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WarningDays1" class="control-label"></label>
+                <input asp-for="WarningDays1" class="form-control" />
+                <span asp-validation-for="WarningDays1" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WarningDays2" class="control-label"></label>
+                <input asp-for="WarningDays2" class="form-control" />
+                <span asp-validation-for="WarningDays2" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="WarningDays2Daily" /> @Html.DisplayNameFor(model => model.WarningDays2Daily)
+                </label>
+            </div>
+            <div class="form-group">
+                <input asp-for="Created" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="CreatedBy" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="Updated" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="UpdatedBy" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

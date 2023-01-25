@@ -1,0 +1,59 @@
+﻿@model ConsumeApiTest.Models.WorkFlowInstanceViewModel
+
+@{
+    ViewData["Title"] = "WorkflowInstance";
+}
+
+<h1>WorkflowInstance</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="WorkflowInstance">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @*<label asp-for="WorkflowInstanceID" class="control-label"></label>*@
+                <input asp-for="WorkflowInstanceID" class="form-control" type="hidden"/>
+                @*<span asp-validation-for="WorkflowInstanceID" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkflowID" class="control-label"></label>
+                <input asp-for="WorkflowID" class="form-control" />
+                <span asp-validation-for="WorkflowID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentWorkflowStepID" class="control-label"></label>
+                <input asp-for="CurrentWorkflowStepID" class="form-control" />
+                <span asp-validation-for="CurrentWorkflowStepID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CurrentWorkflowState" class="control-label"></label>
+                <input asp-for="CurrentWorkflowState" class="form-control" />
+                <span asp-validation-for="CurrentWorkflowState" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Created" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="CreatedBy" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="Updated" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="UpdatedBy" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
