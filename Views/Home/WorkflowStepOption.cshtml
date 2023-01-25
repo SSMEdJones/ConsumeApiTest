@@ -1,0 +1,74 @@
+﻿@model ConsumeApiTest.Models.WorkFlowStepOptionViewModel
+
+@{
+    ViewData["Title"] = "WorkflowStepOption";
+}
+
+<h1>WorkflowStepOption</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="WorkflowStepOption">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="WorkflowStepID" class="control-label"></label>
+                <input asp-for="WorkflowStepID" class="form-control" />
+                <span asp-validation-for="WorkflowStepID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @*<label asp-for="OptionID" class="control-label"></label>*@
+                <input asp-for="OptionID" class="form-control" type="hidden" />
+                @*<span asp-validation-for="OptionID" class="text-danger"></span>*@
+            </div>
+            <div class="form-group">
+                <label asp-for="OptionName" class="control-label"></label>
+                <input asp-for="OptionName" class="form-control" />
+                <span asp-validation-for="OptionName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberRequired" class="control-label"></label>
+                <input asp-for="NumberRequired" class="form-control" />
+                <span asp-validation-for="NumberRequired" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NextStepID" class="control-label"></label>
+                <input asp-for="NextStepID" class="form-control" />
+                <span asp-validation-for="NextStepID" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsComplete" /> @Html.DisplayNameFor(model => model.IsComplete)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsTerminate" /> @Html.DisplayNameFor(model => model.IsTerminate)
+                </label>
+            </div>
+            <div class="form-group">
+                <input asp-for="Created" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="CreatedBy" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="Updated" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input asp-for="UpdatedBy" class="form-control" type="hidden" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
