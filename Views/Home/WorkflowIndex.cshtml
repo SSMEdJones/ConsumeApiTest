@@ -1,7 +1,6 @@
-﻿@model ConsumeApiTest.Models.WorkFlowViewModel
-
+﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Workflow Index";
 }
 
 <h4>WorkFlow</h4>
@@ -9,8 +8,15 @@
 
 <div class="row">
     <ol>
-        <li>@Html.ActionLink("WorkFlow", "WorkflowIndex")</li>
-        <li>@Html.ActionLink("Create a WorkFlow Stake Holder", "WorkflowStakeholder")</li>
+        <li>@Html.ActionLink("Create a Workflow", "Workflow")</li>
+        <li>@Html.ActionLink("Get All Workflows", "Workflows")</li>
+        <li>@Html.ActionLink("Get a Workflow", "WorkflowById")</li>
+        <li>@Html.ActionLink("Edit a Workflow", "EditWorkflow", new { workflowid = Guid.Empty})</li>
+        <li>@Html.ActionLink("Delete A Workflow", "DeleteWorkflow", new { workflowid = Guid.Empty})</li>
+
+        <li>@Html.ActionLink("Back to Main Menu", "Index")</li>
+
+        @*<li>@Html.ActionLink("Create a WorkFlow Stake Holder", "WorkflowStakeholder")</li>
         <li>@Html.ActionLink("Create a WorkFlow Step", "WorkflowStep")</li>
         <li>@Html.ActionLink("Create a WorkFlow Instance", "WorkflowInstance")</li>
         <li>@Html.ActionLink("Create a WorkFlow Step Option", "WorkflowStepOption")</li>
@@ -19,7 +25,9 @@
         <li>@Html.ActionLink("Get All WorkFlow Instance Action Histories", "WorkflowInstanceActionHistories")</li>
 
         <li>@Html.ActionLink("Get A WorkFlow Test", "WorkflowTest")</li>
-        <li>@Html.ActionLink("Get All WorkFlow Tests", "WorkflowTests")</li>
+        <li>@Html.ActionLink("Get All WorkFlow Tests", "WorkflowTests")</li>*@
+        </div>
+
 
     </ol>
 </div>

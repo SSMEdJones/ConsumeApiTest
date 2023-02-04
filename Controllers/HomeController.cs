@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using ConsumeApiTest.DataAccess.ConfiguratonSettings;
 using ConsumeApiTest.DataAccess.Models;
 using ConsumeApiTest.DataAccess.Services.Api;
 using ConsumeApiTest.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace ConsumeApiTest.Controllers
@@ -19,6 +16,8 @@ namespace ConsumeApiTest.Controllers
         private readonly ISSMWorkFlowStepOption _ssmMWorkFlowStepOption;
         private readonly ISSMWorkFlowStepResponder _ssmMWorkFlowStepResponder;
         private readonly ISSMWorkFlowInstance _ssmMWorkFlowInstance;
+        private readonly ISSMWorkFlowInstanceActionHistory _ssmMWorkFlowInstanceActionHistory;
+        private readonly ISSMMWorkFlowTest _ssmMWorkFlowTest;
         private readonly IMapper _mapper;
 
         public HomeController(
@@ -29,6 +28,8 @@ namespace ConsumeApiTest.Controllers
             ISSMWorkFlowStepOption ssmMWorkFlowStepOption,
             ISSMWorkFlowStepResponder ssmMWorkFlowStepResponder,
             ISSMWorkFlowInstance ssmMWorkFlowInstance,
+            ISSMWorkFlowInstanceActionHistory ssmMWorkFlowInstanceActionHistory,
+            ISSMMWorkFlowTest ssmMWorkFlowTest,
             IMapper mapper
             )
         {
@@ -39,6 +40,8 @@ namespace ConsumeApiTest.Controllers
             _ssmMWorkFlowStepOption = ssmMWorkFlowStepOption;
             _ssmMWorkFlowStepResponder = ssmMWorkFlowStepResponder;
             _ssmMWorkFlowInstance = ssmMWorkFlowInstance;
+            _ssmMWorkFlowInstanceActionHistory = ssmMWorkFlowInstanceActionHistory;
+            _ssmMWorkFlowTest = ssmMWorkFlowTest;
             _mapper = mapper;
         }
 
@@ -46,6 +49,64 @@ namespace ConsumeApiTest.Controllers
         public IActionResult Index()
         {            
             var model = new WorkFlowViewModel();
+            return View(model);
+        }
+
+        #region Workflow
+        public IActionResult WorkflowIndex()
+        {
+            //var model = new WorkFlowViewModel();
+            return View();
+        }
+
+        public ActionResult Workflows(bool activeOnly)
+        {
+
+                var model = _ssmMWorkFlow
+                         .GetAll(activeOnly)
+                         .Result;
+
+                return View(model);
+
+        }
+
+        public ActionResult WorkflowById(Guid workflowId, bool delete, bool edit)
+        {
+
+            var model= new WorkFlowViewModel();
+
+            if (workflowId != Guid.Empty)
+            {
+                var response = _ssmMWorkFlow.Get(workflowId);
+
+                if (response != null)
+                {
+                    model = response.Result;
+
+                    if (delete)
+                    {
+
+                        return RedirectToAction("DeleteWorkflow", "Home", new { workflowId = model.WorkflowID });
+                    }    
+                    else if(edit)
+                    {
+                        return RedirectToAction("EditWorkflow", "Home", new { workflowId = model.WorkflowID });
+
+                    }
+
+                    return RedirectToAction("WorkflowDetails", model);
+                }
+
+            }
+
+            return View(model);
+        }
+
+        public ActionResult WorkflowDetails(WorkFlowViewModel workFlowViewModel)
+        {
+
+            var model = workFlowViewModel;
+
             return View(model);
         }
 
@@ -67,16 +128,80 @@ namespace ConsumeApiTest.Controllers
         {
             var createWorkFlow = _mapper.Map<CreateUpdateWorkFlow>(workFlowViewModel);
 
-            var response = _ssmMWorkFlow.Add(createWorkFlow);
 
-            if (response != null)
+            if (workFlowViewModel.Edit)
             {
-                workFlowViewModel.WorkflowID = response.Result;
+                var response = _ssmMWorkFlow.Update(createWorkFlow, workFlowViewModel.WorkflowID);
+                
+                if (response != null)
+                {
+                    workFlowViewModel = response.Result;
+                }
+            }
+            else
+            {
+                var response = _ssmMWorkFlow.Add(createWorkFlow);
+
+                if (response != null)
+                {
+                    workFlowViewModel.WorkflowID = response.Result;
+                }
+
             }
 
-            return RedirectToAction("Workflow");
+            return RedirectToAction("WorkflowIndex");
 
         }
+
+        public ActionResult EditWorkflow(Guid workflowId)
+        {
+            var model = new WorkFlowViewModel();
+            if (workflowId != Guid.Empty)
+            {
+                var response = _ssmMWorkFlow.Get(workflowId);
+
+                if (response != null)
+                {
+                    model = response.Result;
+                    model.Edit = true;
+
+                    return View("Workflow",model);
+                }
+
+            }
+
+            return RedirectToAction("WorkflowById", "Home", new { delete = false, edit = true });
+        }
+
+        public ActionResult DeleteWorkflow(Guid workflowId)
+        {
+            var model = new WorkFlowViewModel();
+            if (workflowId != Guid.Empty)
+            {
+                var response = _ssmMWorkFlow.Get(workflowId);
+
+                if (response != null)
+                {
+                    model = response.Result;
+
+                    return View(model);
+                }
+
+            }
+
+            return RedirectToAction("WorkflowById", "Home", new { delete = true, edit = false});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteWorkflow(WorkFlowViewModel workFlowViewModel)
+        {
+             _ssmMWorkFlow.Delete(workFlowViewModel.WorkflowID);
+
+            return RedirectToAction("WorkflowIndex");
+        }
+
+        #endregion
 
         public ActionResult WorkflowStakeholder()
         {
@@ -212,9 +337,57 @@ namespace ConsumeApiTest.Controllers
 
         }
 
+        public ActionResult WorkflowInstanceActionHistory()
+        {
+
+            var workflowInstanceActionHistoryId = new Guid("A0925BD5-121D-EA11-A2D4-0050569736FD");
+
+            try
+            {
+                var model = _ssmMWorkFlowInstanceActionHistory
+                    .Get(workflowInstanceActionHistoryId)
+                    .Result;    
+
+                return View(model);
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+       
+
+        public ActionResult WorkflowInstanceActionHistories()
+        {
+
+            var workflowInstanceId = new Guid("9FEDE8C0-121D-EA11-A2D4-0050569736FD");
+
+            try
+            {
+
+                var model = _ssmMWorkFlowInstanceActionHistory
+                         .GetAllByWorkflowInstanceId(workflowInstanceId)
+                         .Result;
+            
+            return View(model);
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
         [HttpPost]
         public ActionResult WorkflowInstance(WorkFlowInstanceViewModel workFlowSInstanceViewModel)
         {
+
             var createWorkFlowInstance = _mapper.Map<CreateUpdateWorkFlowInstance>(workFlowSInstanceViewModel);
 
             var response = _ssmMWorkFlowInstance.Add(createWorkFlowInstance);
@@ -228,6 +401,51 @@ namespace ConsumeApiTest.Controllers
 
         }
 
+
+        public ActionResult WorkflowTest()
+        {
+
+            var id = 1;
+
+            try
+            {
+                var model = _ssmMWorkFlowTest
+                    .Get(id)
+                    .Result;
+
+                return View(model);
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+        public ActionResult WorkflowTests()
+        {
+
+            var workflowInstanceId = 1;
+
+            try
+            {
+
+                var model = _ssmMWorkFlowTest
+                         .GetAllByWorkflowInstanceId(workflowInstanceId)
+                         .Result;
+
+                return View(model);
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
         public IActionResult Privacy()
         {
             return View();
@@ -237,6 +455,68 @@ namespace ConsumeApiTest.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+       
+        //public Guid CompleteWorkflowInstanceAction(Guid InstanceID, Guid WorkflowStepID, Guid OptionID, string Action, string currentUser)
+        public Guid CompleteWorkflowInstanceAction(WorkflowInstanceActionHistory workflowInstanceActionHistory, string currentUser)
+        {
+            Guid newAction = new Guid();
+            //WorkflowStepOption opt = new WorkflowStepOption();
+            //opt = opt.GetWorkflowStepOption(OptionID);
+            //int numRequired = opt.NumberRequired;
+
+            var optionId = new Guid(workflowInstanceActionHistory.OptionID.ToString());
+
+            var workflowStepOption = _ssmMWorkFlowStepOption.Get(optionId);
+            var required = workflowStepOption.Result.NumberRequired;
+
+            WorkflowInstanceActionHistory action = new WorkflowInstanceActionHistory
+            {
+                WorkflowInstanceID = workflowInstanceActionHistory.WorkflowInstanceID,
+                WorkflowStepID = workflowInstanceActionHistory.WorkflowStepID,
+                OptionID = workflowInstanceActionHistory.OptionID,
+                Action = workflowInstanceActionHistory.Action
+            };
+
+            //var instanceId = new Guid(workflowInstanceActionHistory.WorkflowInstanceID.ToString());
+            //var completed = _ssmMWorkFlowStepOption.GetAllByInstanceId(instanceId);
+
+            //    action.GetWorkflowInstanceActionHistoryByWorkflowInstanceID(InstanceID).Where(a => a.OptionID == OptionID).Count();
+            //opt = opt.GetWorkflowStepOption(OptionID);
+            //int numRequired = opt.NumberRequired;
+            //WorkflowInstanceActionHistory action = new WorkflowInstanceActionHistory
+            //{
+            //    WorkflowInstanceID = InstanceID,
+            //    WorkflowStepID = WorkflowStepID,
+            //    OptionID = OptionID,
+            //    Action = Action
+            //};
+            //int numDone = action.GetWorkflowInstanceActionHistoryByWorkflowInstanceID(InstanceID).Where(a => a.OptionID == OptionID).Count();
+            //newAction = action.Save(currentUser);
+            //if (numDone + 1 >= numRequired)
+            //{
+            //    action.Action = "CompleteStep";
+            //    action.Save(currentUser);
+            //    WorkflowInstance i = (new WorkflowInstance()).GetWorkflowInstance(InstanceID);
+            //    if ((opt.NextStepID == Guid.Empty || opt.NextStepID == null) && opt.IsComplete)
+            //    {
+            //        i.CurrentWorkflowState = "Complete";
+            //        i.CurrentWorkflowStepID = Guid.Empty;
+            //    }
+            //    else if ((opt.NextStepID == Guid.Empty || opt.NextStepID == null) && opt.IsTerminate)
+            //    {
+            //        i.CurrentWorkflowState = "Cancelled";
+            //        i.CurrentWorkflowStepID = Guid.Empty;
+            //    }
+            //    else
+            //    {
+            //        i.CurrentWorkflowStepID = opt.NextStepID;
+            //        i.CurrentWorkflowState = "InProcess";
+            //    }
+            //    i.Save(currentUser);
+            //}
+            return newAction;
         }
     }
 }

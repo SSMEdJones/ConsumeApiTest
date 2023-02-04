@@ -1,0 +1,71 @@
+﻿@model IEnumerable<ConsumeApiTest.Models.WorkFlowTestViewModel>
+
+@{
+    ViewData["Title"] = "WorkflowTests";
+}
+
+<h1>WorkflowTests</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkflowInstanceID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkflowStepID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OptionID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Action)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Completed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompletedBy)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkflowInstanceID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkflowStepID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OptionID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Action)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Completed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompletedBy)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

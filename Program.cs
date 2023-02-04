@@ -28,8 +28,11 @@ builder.Services.AddScoped<ISSMWorkFlow, SSMWorkFlow>();
 builder.Services.AddScoped<ISSMWorkFlowStakeholder, SSMWorkFlowStakeholder>();
 builder.Services.AddScoped<ISSMWorkFlowStep, SSMWorkFlowStep>();
 builder.Services.AddScoped<ISSMWorkFlowInstance, SSMWorkFlowInstance>();
+builder.Services.AddScoped<ISSMWorkFlowInstanceActionHistory, SSMWorkFlowInstanceActionHistory>();
 builder.Services.AddScoped<ISSMWorkFlowStepOption, SSMWorkFlowStepOption>();
 builder.Services.AddScoped<ISSMWorkFlowStepResponder, SSMWorkFlowStepResponder>();
+
+builder.Services.AddScoped<ISSMMWorkFlowTest, SSMMWorkFlowTest>();
 
 
 var app = builder.Build();

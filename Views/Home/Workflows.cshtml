@@ -1,0 +1,125 @@
+﻿@model IEnumerable<ConsumeApiTest.Models.WorkFlowViewModel>
+
+@{
+    ViewData["Title"] = "Workflows";
+}
+
+<h1>Workflows</h1>
+
+<form asp-action="Workflows">
+    <p>
+        @* <a asp-action="Create">Create New</a>*@
+        <input id="activeOnly" name="activeOnly" value="true" type="checkbox" />
+
+        <label for="activeOnly"> Active Only</label><br>
+    </p>
+    <p>
+        @* <a asp-action="Create">Create New</a>*@
+        <input type="submit" value="Refresh" class="btn btn-primary" />
+
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkflowID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkflowName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.WorkflowDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StakeholderNotificationType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompleteMessage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CancelledMessage)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ValidFrom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ValidTo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Created)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Updated)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UpdatedBy)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WorkflowID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WorkflowName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WorkflowDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StakeholderNotificationType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompleteMessage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CancelledMessage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ValidFrom)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ValidTo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Created)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Updated)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UpdatedBy)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+<div>
+    <a asp-action="WorkflowIndex">Back to Workflow Menu</a>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#formname").on("change", "input:checkbox", function () {
+            $("#formname").submit();
+        });
+    });
+</script>
